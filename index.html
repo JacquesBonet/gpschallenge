@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ForeignKey column</title>
+    <meta charset="utf-8">
+    <link href="./styles/examples-offline.css" rel="stylesheet">
+    <link href="./styles/kendo.common.min.css" rel="stylesheet">
+    <link href="./styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="./styles/kendo.default.min.css" rel="stylesheet">
+
+    <script src="jquery.min.js"></script>
+    <script src="kendo.web.min.js"></script>
+</head>
+<body>
+<div id="example" class="k-content">
+    <table id="grid" data-bind="source: drivers">
+    </table>
+</div>
+<script>
+
+    $(document).ready(function () {
+
+        var gridColumns = [];
+        gridColumns.push({ field: "name", title: "Driver", width: 110});
+        gridColumns.push({ field: "speed", title: "Moy", width: 50, format: "{0:n2}"});
+        for (var j = 0; j < 5; j++) {
+            gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: 50, format: '{0:n2}'});
+            gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: 50, template: '<a href=\" #: runs[' + j + '].spot # \">Lien</a>'});
+            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', format: '{0:MM/dd/yyyy}', width: 88});
+        }
+
+        $("#grid").kendoGrid({
+            height: 430,
+            sortable: true,
+            resizable: true,
+            columns: gridColumns
+        });
+
+        $("#grid").data().kendoGrid.thead.prepend('<tr><td colspan=2><\/td><td colspan=3 align="center">500 m Run 1<\/td><td colspan=3 align="center">500 m Run 2<\/td><td colspan=3 align="center">500 m Run 3<\/td><td colspan=3 align="center">500 m Run 4<\/td><td colspan=3 align="center">500 m Run 5<\/td><\/tr>');
+
+        $.getJSON("http://vendmamaison.net/gpschallenge/gpsChallenge.json", function (jsonData) {
+
+            kendo.bind($('#example'), jsonData);
+
+        });
+
+    });
+</script>
+</body>
+</html>
