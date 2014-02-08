@@ -1,7 +1,7 @@
 gpschallenge
 ============
 
-GPS speed challenge. USe gpsActionReplay for importing result
+Web program for managing GPS speed challenge. Use gpsActionReplay for importing result, Kendoui for display.
 
 IMPORT
 ____________________________________________________________________
