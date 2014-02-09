@@ -38,7 +38,7 @@
 
         $("#grid").data().kendoGrid.thead.prepend('<tr><td colspan=2><\/td><td colspan=3 align="center">500 m Run 1<\/td><td colspan=3 align="center">500 m Run 2<\/td><td colspan=3 align="center">500 m Run 3<\/td><td colspan=3 align="center">500 m Run 4<\/td><td colspan=3 align="center">500 m Run 5<\/td><\/tr>');
 
-        $.getJSON("http://vendmamaison.net/gpschallenge/gpsChallenge.json", function (jsonData) {
+        $.getJSON("./gpsChallenge.json", function (jsonData) {
 
             kendo.bind($('#example'), jsonData);
 

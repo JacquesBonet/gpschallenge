@@ -12,6 +12,13 @@ Select only runs of 500 meters
 Calculate average on 5 runs
 
 
+INSTALL
+____________________________________________________________________
+
+Download the zip file
+Unzip under a directory (root possible) of your web server
+
+
 HOW TO IMPORT
 ____________________________________________________________________
 
@@ -37,7 +44,7 @@ The import will generate a json file gpschallenge.json on your web server.
 DISPLAY RESULTS
 ___________________________________________________________________
 
-To display the result, enter the url <your host>/gpschallenge
+To display the result, enter the url where is located the index.html file.
 
 
 CUSTOMIZATION
