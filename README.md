@@ -43,5 +43,5 @@ To display the result, enter the url <your host>/gpschallenge
 CUSTOMIZATION
 ___________________________________________________________________
 
-Change the host to accees the user profile.
+Change the host in autoload.php file permitting to access the user profile.
 
