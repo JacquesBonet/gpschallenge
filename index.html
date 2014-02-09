@@ -21,12 +21,12 @@
     $(document).ready(function () {
 
         var gridColumns = [];
-        gridColumns.push({ field: "name", title: "Driver", width: 110});
+        gridColumns.push({ field: "name", title: "Driver", width: 110, template: '<a href=\" #: driverUrl # \" target=\"_blank\"> #: name # </a>'});
         gridColumns.push({ field: "speed", title: "Moy", width: 50, format: "{0:n2}"});
         for (var j = 0; j < 5; j++) {
             gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: 50, format: '{0:n2}'});
-            gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: 50, template: '<a href=\" #: runs[' + j + '].spot # \">Lien</a>'});
-            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', format: '{0:MM/dd/yyyy}', width: 88});
+            gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: 58, template: '<a href=\" #: runs[' + j + '].maps # \" target=\"_blank\"> #: runs[' + j + '].spot # </a>'});
+            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', format: '{0:MM/dd/yyyy}', width: 84});
         }
 
         $("#grid").kendoGrid({
