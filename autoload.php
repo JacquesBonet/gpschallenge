@@ -52,26 +52,64 @@ class Run {
     }
 }
 class Driver {
+    const MAX_RUNS = 5;
     var $name = "";
     var $driverUrl = "";
     var $speed = 0;
-    var $runs = null;
+    var $runs = [];
+    var $updated = 0;
+}
+
+function insertRun( &$driver, &$newRun)
+{
+    $inserted = 0;
+    $i = 0;
+
+    // parcours des précedents runs du driver
+    for ($i = 0; $i < count( $driver->runs); $i++)
+    {
+        // run deja rentré?
+        if ($driver->runs[$i]->speed == $newRun->speed && $driver->runs[$i]->date == $newRun->date)
+            return;
+        // le nouveau run est il superieur
+        if ($newRun->speed > $driver->runs[$i]->speed)
+        {
+            $driver->updated++;
+            // décalage des runs moins performants, dans la limite de la taille du tableau
+            for ($j = min( count( $driver->runs) - 1, Driver::MAX_RUNS - 2); $j >= $i; $j--)
+            {
+                $driver->runs[$j + 1] = $driver->runs[$j];
+            }
+            // set du run plus performant
+            $driver->runs[$i] = $newRun;
+            return;
+        }
+    }
+
+    // si run inf mais pas 5 results on rajoute
+    if ($i ==  count( $driver->runs) && $i < Driver::MAX_RUNS)
+    {
+        $driver->runs[$i] = $newRun;
+        $driver->updated++;
+    }
 }
 
 class Model {
     var $drivers = [];
 }
 
-function average($driver)
+function average(&$driver)
 {
     $driver->speed = 0;
-    if (count($driver->runs) == 5)
+    if (count($driver->runs) == Driver::MAX_RUNS)
     {
-        for( $i = 0; $i < 5; $i++)
+        for( $i = 0; $i < Driver::MAX_RUNS; $i++)
             $driver->speed += $driver->runs[$i]->speed;
     }
-    $driver->speed = $driver->speed / 5;
+    $driver->speed = $driver->speed / Driver::MAX_RUNS;
 }
+
+
 
 // lecture du post
 $buffer = implode( $_POST);
@@ -82,12 +120,10 @@ Run::init();
 $xml = simplexml_load_string($buffer);
 
 // parse de l'objet PHP pour obtenir un objet Driver
-$count = 0;
-$updated = 0;
 $newDriver = new Driver;
 $parse = explode( ":", $xml->userLogin);
 $newDriver->name = (string ) $parse[0];
-$newDriver->driverUrl = null;
+$newDriver->driverUrl = "";
 if (count($parse) == 2)
     $newDriver->driverUrl = "http://www.windsurfing33.com/forum/memberlist.php?mode=viewprofile&u=$parse[1]";
 
@@ -96,21 +132,23 @@ if (count($parse) == 2)
 foreach($xml->resultItem as $resultItem) {
 
     if ($resultItem["value"] == "500.0" && $resultItem["type"] == "distance") {
-        $run = new Run;
-        $run->speed = (float) $resultItem->speed;
-        $run->length = (float) $resultItem->length;
-        $run->date = (string) date("d/m H:i", strtotime($resultItem->date));
+        error_log( "valuee = 500", 3, "./trace.log");
+        $newRun = new Run;
+        $newRun->speed = (float) $resultItem->speed;
+        $newRun->length = (float) $resultItem->length;
+        $newRun->date = (string) date("d/m H:i", strtotime($resultItem->date));
         $initialPos = new Position;
         $initialPos->lat = (float) $resultItem->initialPos->position["lat"];
         $initialPos->lon = (float) $resultItem->initialPos->position["lon"];
         $finalPos = new Position;
         $finalPos->lat = (float) $resultItem->finalPos->position["lat"];
         $finalPos->lon = (float) $resultItem->finalPos->position["lon"];
-        $run->initialPos = $initialPos;
-        $run->finalPos = $finalPos;
-        $run->findSpot();
-        $run->maps = "https://www.google.com/maps/preview/dir/$initialPos->lat,$initialPos->lon/$finalPos->lat,$finalPos->lon";
-        $newDriver->runs[$count++] = $run;
+        $newRun->initialPos = $initialPos;
+        $newRun->finalPos = $finalPos;
+        $newRun->findSpot();
+        $newRun->maps = "https://www.google.com/maps/preview/dir/$initialPos->lat,$initialPos->lon/$finalPos->lat,$finalPos->lon";
+        // insert on good position
+        insertRun( $newDriver, $newRun);
     }
 }
 average( $newDriver);
@@ -134,35 +172,18 @@ if ($file_handle != false)
         {
             // on a trouvé le driver
             $found = true;
+            $driver->updated = 0;
 
-            if ($driver->driverUrl == null)
+            if ($driver->driverUrl == null || $driver->driverUrl == "")
                 $driver->driverUrl = $newDriver->driverUrl;
 
             // parcours des nouveaux runs du driver
             foreach ($newDriver->runs as &$newRun)
             {
-                // parcours des précedents runs du driver
-                for ($i = 0; $i < count( $driver->runs); $i++)
-                {
-                    // run deja rentré?
-                    if ($driver->runs[$i]->speed == $newRun->speed && $driver->runs[$i]->date == $newRun->date)
-                        break;
-                    // le run precedent est il inferieur
-                    if ($driver->runs[$i]->speed < $newRun->speed && $driver->runs[$i]->date != $newRun->date)
-                    {
-                        $updated++;
-                        // décalage des runs moins performants, dans la limite de la taille du tableau
-                        for ($j = min( 3, count( $driver->runs)); $j >= $i; $j--)
-                        {
-                            $driver->runs[$j + 1] = $driver->runs[$j];
-                        }
-                        // set du run plus performant
-                        $driver->runs[$i] = $newRun;
-                        break;
-                    }
-                }
+                insertRun( $driver, $newRun);
             }
             average( $driver);
+            $newDriver = $driver;
             break;
         }
     }
@@ -172,7 +193,6 @@ if ($found == false)
 {
     $drivers[] = $newDriver;
     // calculate average
-
 }
 
 $model = new Model();
@@ -184,7 +204,7 @@ fclose($file_handle);
 http_response_code(200);
 
 if ($found == false)
-    echo "$count new runs added for driver $newDriver->name";
+    echo "$newDriver->updated new runs added for driver $newDriver->name";
 else
-    echo "$updated runs updated for driver $newDriver->name";
+    echo "$newDriver->updated runs updated for driver $newDriver->name";
 ?>

@@ -43,6 +43,7 @@
             kendo.bind($('#example'), jsonData);
 
         });
+        $("#grid").data('kendoGrid').dataSource.sort({ field: "speed", dir: "desc" });
 
     });
 </script>
