@@ -6,7 +6,7 @@ Web program for managing GPS speed challenge. Use gpsActionReplay for importing 
 
 FUNCTIONS
 ___________________________________________________________________
-Import GPX/SBX file 
+Import GPX/SBN file 
 Display result on a grid
 Select only runs of 500 meters
 Calculate average on 5 runs
