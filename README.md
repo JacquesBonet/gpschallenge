@@ -3,23 +3,45 @@ gpschallenge
 
 Web program for managing GPS speed challenge. Use gpsActionReplay for importing result, Kendoui for display.
 
-IMPORT
+
+FUNCTIONS
+___________________________________________________________________
+Import GPX/SBX file 
+Display result on a grid
+Select only runs of 500 meters
+Calculate average on 5 runs
+
+
+HOW TO IMPORT
 ____________________________________________________________________
 
-Import is done with autoload.php file.
+Copy the files on your PHP web server
 
-For importing result, you have to use gpsActionReplay software.
+Install gpsActionReplay software.
 
 Open a gpx ou sbn file.
 Next go to Speed Result menu
 And select button "Send current to server"
-A dialog box open. For user, enter the name of the racer. No pass need.
+A dialog box open. 
+- user entry field : enter the name of the racer. You can also specify a user id permitting to calculate the url user profile which will be displayed on the grid. Syntaxe : <user name>[:<user id>].
+- pass entry field : no need 
+- server entry field: enter the url to access the autoload.php file located on your web server
+
 The program process only runs of 500.0 meters
 
-The import will generate a json file gpschallenge.json
+The import will generate a json file gpschallenge.json on your web server.
 
 
-DISPLAY
+
+
+DISPLAY RESULTS
 ___________________________________________________________________
 
-To display the result, use index.html file
+To display the result, enter the url <your host>/gpschallenge
+
+
+CUSTOMIZATION
+___________________________________________________________________
+
+Change the host in autoload.php file permitting to access the user profile.
+
