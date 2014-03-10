@@ -48,7 +48,7 @@
         for (var j = 0; j < 5; j++) {
             gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: "50px", format: '{0:n2}'});
             gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: "58px", template: '<a href=\" #: runs[' + j + '].maps # \" target=\"_blank\"> #: runs[' + j + '].spot # </a>'});
-            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', width: "76px", format: '{0:MM/dd/yyyy}'});
+            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', width: "80px", format: '{0:MM/dd/yyyy}'});
         }
 
         $("#grid").kendoGrid({
