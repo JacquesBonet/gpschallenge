@@ -31,7 +31,7 @@ class Run {
         self::$spots[2] = array( 44.92, -1.16, 45.12, -1.08, "Lacan");
         self::$spots[3] = array( 44.30, -1.22, 44.39, -1.08, "Bisca");
         self::$spots[4] = array( 44.62, -1.25, 44.79, -0.97, "Arcach");
-        self::$spots[5] = array( 44.54, -1.25, 44.61, -1.21, "Arguin");
+        self::$spots[5] = array( 44.45, -1.26, 44.61, -1.21, "Arguin");
     }
     function findSpot()
     {
