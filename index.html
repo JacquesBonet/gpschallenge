@@ -9,6 +9,7 @@
     <link href="./styles/examples-offline.css" rel="stylesheet">
     <script src="jquery.min.js"></script>
     <script src="kendo.web.min.js"></script>
+    <script src="URLParser.js"></script>
 </head>
 <body>
 	<div class="banner">
@@ -16,9 +17,18 @@
 		<div class="textbanner"></div>
 		<a href="http://www.glissup.fr" target="_blank"><div class="glissup"></div></a>
 	</div>
-	<div id="containgrid" class="k-content">
-                <table id="grid" data-bind="source: drivers"></table>
+    <div id="tabstrip">
+        <ul>
+            <li>2015</li>
+            <li>2014</li>
+        </ul>
+        <div id="containgrid_2015" class="k-content">
+            <table id="grid_2015" data-bind="source: challenge"></table>
         </div>
+        <div id="containgrid_2014" class="k-content">
+            <table id="grid_2014" data-bind="source: challenge"></table>
+        </div>
+    </div>
 <script>
 	var rowNumber = 0;
 	 
@@ -30,8 +40,8 @@
 	    return ++rowNumber;
 	}
 
-	function resizeGrid() {
-	    var gridElement = $("#grid");
+	function resizeGrid( id) {
+	    var gridElement = $(id);
 	    var dataArea = gridElement.find(".k-grid-content");
 	    var newHeight = gridElement.parent().innerHeight() - 2;
 	    var diff = gridElement.innerHeight() - dataArea.innerHeight();
@@ -41,36 +51,167 @@
 
     $(document).ready(function () {
 
+        var admin = URLParser( window.location.href).hasParam( "admin");
+        var lEditable = false;
+
         var gridColumns = [];
-        gridColumns.push({ title: "Rank", width: "4em", template: "#= renderNumber(data) #"});
-        gridColumns.push({ field: "name", title: "Driver", template: '<a href=\" #: driverUrl # \" target=\"_blank\"> #: name # </a>'});
-        gridColumns.push({ field: "speed", title: "Moy", width: "4em", format: "{0:n2}"});
-        for (var j = 0; j < 5; j++) {
-            gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: "5em", format: '{0:n2}'});
-            gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: "5em", template: '<a href=\" #: runs[' + j + '].maps # \" target=\"_blank\"> #: runs[' + j + '].spot # </a>'});
-            gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', width: "7em", format: '{0:MM/dd/yyyy}'});
-        }
+        var me = this;
         
-        $("#grid").kendoGrid({
+        if (!admin) 
+            gridColumns.push({ title: "Rank", width: "4em", template: "#= renderNumber(data) #"});
+
+        gridColumns.push({ field: "name", title: "Driver", template: '<a href=\" #: driverUrl # \" target=\"_blank\"> #: name # </a>'});
+
+        if (!admin) {
+            gridColumns.push({ field: "speed", title: "Moy", width: "4em", format: "{0:n2}"});
+            for (var j = 0; j < 5; j++) {
+                gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: "5em", format: '{0:n2}'});
+                gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: "5em", template: '<a href=\" #: runs[' + j + '].maps # \" target=\"_blank\"> #: runs[' + j + '].spot # </a>'});
+                gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', width: "7em", format: '{0:MM/dd/yyyy}'});
+            }
+        }
+
+        if (admin) {
+            lEditable = "inline";
+            gridColumns.push({command: ["edit", "destroy"], title: "&nbsp;", width: "250px"});
+        }
+
+         var ds_2015 = null;
+
+        if (admin) {
+              ds_2015  = new kendo.data.DataSource({
+                batch: true,
+                transport: {
+	                read: {
+	                    url : "gpsChallenge_2015.json",
+	                    contentType: "application/json; charset=utf-8",
+	                    dataType: "json"
+	                },
+	                update: {
+	                    url : "write.php",
+	                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+	                    dataType: "json",
+	                    type: "POST",
+	                },
+                    destroy: {
+                        url: "write.php",
+                        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                        dataType: "json",
+                        type: "POST",
+                    },
+                    error: function (e) {
+				        // handle error
+				        alert("Status: " + e.status + "; Error message: " + e.errorThrown);
+				    },
+                    parameterMap: function(options, operation) {
+                        if (operation !== "read" && options.models) {
+                            return { data: kendo.stringify( { challenge: kendo.widgetInstance($("#grid_2015")).dataSource.data()}),
+                        			 modified: kendo.stringify( options.models)};
+                        }
+                    }
+                },
+                schema: {
+                    // specify the the schema is JSON
+                    type: "json",
+                    // the XML element which represents a single data record
+                    model: {
+                        id: "name",
+                        fields: {
+                            name: { editable: true, nullable: false }
+                        }
+                    },
+                    data: "challenge"
+                }
+            });
+        }
+        else {        
+            ds_2015 = new kendo.data.DataSource({
+                transport: {
+	                read: {
+	                    url : "gpsChallenge_2015.json",
+	                    contentType: "application/json; charset=utf-8",
+	                    dataType: "json",
+	                    type: "get"
+	                },
+                },
+				schema: {
+                    // specify the the schema is JSON
+                    type: "json",
+                    // the XML element which represents a single data record
+                    data: "challenge"
+            	}
+            });
+
+             var ds_2014 = new kendo.data.DataSource({
+                transport: {
+	                read: {
+	                    url : "gpsChallenge_2014.json",
+	                    contentType: "application/json; charset=utf-8",
+	                    dataType: "json",
+	                    type: "get"
+	                },
+                },
+                schema: {
+                    // specify the the schema is JSON
+                    type: "json",
+                    // the XML element which represents a single data record
+                    data: "challenge"
+                }
+            });
+
+            $("#grid_2014").kendoGrid({
+                dataSource : ds_2014,
+                sortable: true,
+                resizable: true,
+                dataBound: resetRowNumber,
+                columns: gridColumns,
+                editable: lEditable
+            });
+        }
+
+        $("#grid_2015").kendoGrid({
+            dataSource : ds_2015,
             sortable: true,
             resizable: true,
-            dataBound:resetRowNumber,
-            columns: gridColumns
+            dataBound: resetRowNumber,
+            columns: gridColumns,
+            editable: lEditable
         });
 
 		$(window).resize(function(){
-		    resizeGrid();
+		    resizeGrid("#grid_2014");
+            resizeGrid("#grid_2015");
 		});
 
-        $("#grid").data().kendoGrid.thead.prepend('<tr><td colspan=3></td><td colspan=3 align="center">500 m Run 1</td><td colspan=3 align="center">500 m Run 2</td><td colspan=3 align="center">500 m Run 3</td><td colspan=3 align="center">500 m Run 4</td><td colspan=3 align="center">500 m Run 5</td></tr>');
+         if (!admin) {
+            var header = '<tr><td colspan=3></td><td colspan=3 align="center">500 m Run 1</td><td colspan=3 align="center">500 m Run 2</td><td colspan=3 align="center">500 m Run 3</td><td colspan=3 align="center">500 m Run 4</td><td colspan=3 align="center">500 m Run 5</td></tr>';
+            var grid_2014 = kendo.widgetInstance($("#grid_2014"));
+            grid_2014.thead.prepend( header);
 
-        $.getJSON("./gpsChallenge.json", function (jsonData) {
+            var grid_2015 = kendo.widgetInstance($("#grid_2015"));
+            grid_2015.thead.prepend( header);
 
-            kendo.bind($('#grid'), jsonData);
+            grid_2014.dataSource.sort({ field: "speed", dir: "desc" });
+            grid_2015.dataSource.sort({ field: "speed", dir: "desc" });
+        }
 
-        });
-        $("#grid").data('kendoGrid').dataSource.sort({ field: "speed", dir: "desc" });
-        resizeGrid();
+        resizeGrid("#grid_2014");
+        resizeGrid("#grid_2015");
+
+        $("#tabstrip").kendoTabStrip({
+            animation: {
+                // fade-out current tab over 1000 milliseconds
+                close: {
+                    duration: 600,
+                    effects: "fadeOut"
+                },
+                // fade-in new tab over 500 milliseconds
+                open: {
+                    duration: 400,
+                    effects: "fadeIn"
+                }
+            }
+        }).data("kendoTabStrip").select(0);
     });
 </script>
 </body>

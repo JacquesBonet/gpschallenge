@@ -1,0 +1,70 @@
+{
+  "_items": [
+    {
+      "libelle_long": "Chauves-souris",
+      "_links": {
+        "self": {
+          "href": "taxons/54ba6e301d41c843ca336d6f",
+          "title": "taxon"
+        }
+      },
+      "tags": [
+        "chiroptera",
+        "chauve-souris",
+        "volant",
+        "ultrason"
+      ],
+      "_updated": "Sat, 17 Jan 2015 14:14:08 GMT",
+      "_created": "Sat, 17 Jan 2015 14:14:08 GMT",
+      "libelle_court": "Chiroptera",
+      "_etag": "d65b5d549e24bef9d5dc688128100d22b36c92d8",
+      "description": "<p><img src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/1/15/PSM_V07_D667_Long_eared_english_bat.jpg/240px-PSM_V07_D667_Long_eared_english_bat.jpg\"/><br/></p><p><br/></p><p>Les chauves-souris forment l'ordre des chiropt&#232;res (Chiroptera), comptant pr&#232;s d'un millier d'esp&#232;ces des mammif&#232;res, soit un cinqui&#232;me de la classe des Mammalia. Cela en fait le deuxi&#232;me ordre de mammif&#232;res le plus important, apr&#232;s celui des rongeurs (Rodentia). Ces animaux nocturnes sont souvent capables d'&#233;cholocation pour s'orienter dans le noir.</p><p><br/></p><p>Deux sous-ordres &#233;taient classiquement admis : les Microchiropt&#232;res (environ 800 esp&#232;ces, de petite taille relative, capables d&#8217;&#233;cholocation) et les M&#233;gachiropt&#232;res (environ 170 esp&#232;ces dont les fameuses roussettes, de grande taille relative ; Dobson 1875). R&#233;cemment, sur des bases mol&#233;culaires, l&#8217;ordre a &#233;t&#233; red&#233;coup&#233; en deux nouveaux sous-ordres pour rompre la paraphylie des Microchiropt&#232;res : les Yinpterochiroptera et les Yangochiroptera (Teeling et al. 2002, Teeling et al. 2005).</p><p><br/></p><p>L'&#233;cholocation n'est bien d&#233;velopp&#233;e que chez les microchiropt&#232;res insectivores. G&#233;n&#233;ralement actifs la nuit, ils peuvent se diriger dans l'obscurit&#233; en &#233;mettant des ultrasons dont ils captent la r&#233;flexion, &#233;cholocalisant ainsi leurs proies et les obstacles. Les m&#233;gachiropt&#232;res, quant &#224; eux, se fient plus &#224; leur vue et &#224; leur odorat.</p><p><br/></p><p>Les chiropt&#232;res sont les seuls mammif&#232;res dou&#233;s du vol actif, &#224; distinguer du vol plan&#233; que pratiquent les &#233;cureuils volants, les phalangers ou les gal&#233;opith&#232;ques. Ils se d&#233;placent dans les airs gr&#226;ce &#224; une aile form&#233;e d'une membrane de peau entre le corps, les membres et les doigts. La plupart des esp&#232;ces ne se posent qu'exceptionnellement au sol et s'y meuvent maladroitement. Ils se reposent en se suspendant aux asp&#233;rit&#233;s par les griffes des orteils.</p><p><br/></p><p>Dans les zones cultiv&#233;es, habit&#233;es ou subissant la d&#233;forestation, de nombreuses esp&#232;ces de chiropt&#232;res sont en forte r&#233;gression ou ont localement disparu. Certaines font l'objet de plans de restauration ou b&#233;n&#233;ficient d'un statut de protection, notamment en France.</p><p><br/></p><p>Dans la culture populaire, l'image de la chauvesouris peut &#234;tre b&#233;n&#233;fique ou mal&#233;fique selon les pays. &#192; cause de leur aspect &#233;trange et de leur vie nocturne et, par voie de cons&#233;quence, du myst&#232;re qui entoure leur mode de vie, elles sont souvent victimes d'id&#233;es re&#231;ues qui leur ont valu longtemps d'&#234;tre pers&#233;cut&#233;es par l'homme.</p>",
+      "_id": "54ba6e301d41c843ca336d6f"
+    },
+    {
+      "_updated": "Sat, 17 Jan 2015 14:16:42 GMT",
+      "_links": {
+        "self": {
+          "href": "taxons/54ba6eca1d41c843ca336d70",
+          "title": "taxon"
+        }
+      },
+      "libelle_long": "Roussette",
+      "_created": "Sat, 17 Jan 2015 14:16:42 GMT",
+      "libelle_court": "rousette",
+      "_etag": "d8d7c39eb7a1a54600c084a4cd63c4ac9e393ccb",
+      "description": "<p><img src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Pteropus_conspicillatus_with_baby.jpg/180px-Pteropus_conspicillatus_with_baby.jpg?uselang=fr\"/><br/></p><p><br/></p><p>Roussette est un nom vernaculaire ambigu en fran&#231;ais, pouvant d&#233;signer plusieurs esp&#232;ces diff&#233;rentes de chauves-souris frugivores, plus pr&#233;cis&#233;ment parmi les Pt&#233;ropodid&#233;s, appel&#233;es aussi Flying foxes en anglais, traduit par renards volants. C'est le cas notamment des esp&#232;ces des genres Acerodon, Pteropus et Rousettus.</p>",
+      "_id": "54ba6eca1d41c843ca336d70"
+    },
+    {
+      "_updated": "Sat, 17 Jan 2015 14:18:49 GMT",
+      "_links": {
+        "self": {
+          "href": "taxons/54ba6f491d41c843ca336d71",
+          "title": "taxon"
+        }
+      },
+      "libelle_long": "Pteropus conspicillatus",
+      "_created": "Sat, 17 Jan 2015 14:18:49 GMT",
+      "libelle_court": "Renard volant \u00e0 lunettes",
+      "_etag": "bf93b030ec358fc59d931887a7f0b0bfe6b766fd",
+      "description": "<p><img src=\"http://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Pteropus_conspicillatus.jpg/180px-Pteropus_conspicillatus.jpg?uselang=fr\"/><br/></p><p><br/></p><p>Le renard volant &#224; lunettes (Pteropus conspicillatus) est une esp&#232;ce de chauve-souris vivant au Queensland en Australie et en Nouvelle-Guin&#233;e. Il est marron fonc&#233;.</p><h3>Description</h3><p>Il mesure 22 &#224; 25 cm et p&#232;se 400 &#224; 600 g. Il a un anneau de fourrure jaune autour des yeux. Ce pelage se retrouve sur le dos, le cou et les &#233;paules.</p><h3>Distribution et habitat</h3><p>Il vit dans la canop&#233;e des for&#234;ts tropicales humides.</p><p><br/></p><p><br/></p>",
+      "_id": "54ba6f491d41c843ca336d71"
+    }
+  ],
+  "_meta": {
+    "max_results": 20,
+    "total": 3,
+    "page": 1
+  },
+  "_links": {
+    "self": {
+      "href": "taxons?max_results=20",
+      "title": "taxons"
+    },
+    "parent": {
+      "href": "/",
+      "title": "home"
+    }
+  }
+}

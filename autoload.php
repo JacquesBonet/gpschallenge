@@ -95,6 +95,10 @@ function insertRun( &$driver, &$newRun)
 }
 
 class Model {
+    var $challenge = [];
+}
+
+class ModelDrivers {
     var $drivers = [];
 }
 
@@ -136,7 +140,7 @@ foreach($xml->resultItem as $resultItem) {
         $newRun = new Run;
         $newRun->speed = (float) $resultItem->speed;
         $newRun->length = (float) $resultItem->length;
-        $newRun->date = (string) date("d/m H:i", strtotime($resultItem->date));
+        $newRun->date = (string) date("m/d H:i", strtotime($resultItem->date));
         $initialPos = new Position;
         $initialPos->lat = (float) $resultItem->initialPos->position["lat"];
         $initialPos->lon = (float) $resultItem->initialPos->position["lon"];
@@ -154,14 +158,16 @@ foreach($xml->resultItem as $resultItem) {
 average( $newDriver);
 
 $found = false;
+$dataFile = "gpsChallenge_2015.json";
+$dataFileDrivers = "users.json";
 
 // lecture des données archivées sous la forme d'un objet Drivers de type tableau
 
-if (($file_handle = fopen('./gpsChallenge.json', 'r')) != false)
+if (($file_handle = fopen( $dataFile, "r")) != false)
 {
 
-    $model = json_decode( fread($file_handle, filesize('gpsChallenge.json')));
-    $drivers = $model->drivers;
+    $model = json_decode( fread($file_handle, filesize($dataFile)));
+    $drivers = $model->challenge;
 
     // parcours de la list des drivers enregistrés
     foreach ($drivers as &$driver)
@@ -172,7 +178,7 @@ if (($file_handle = fopen('./gpsChallenge.json', 'r')) != false)
             $found = true;
             $driver->updated = 0;
 
-            if ($driver->driverUrl == null || $driver->driverUrl == "")
+            if ($newDriver->driverUrl != null && $newDriver->driverUrl != "")
                 $driver->driverUrl = $newDriver->driverUrl;
 
             // parcours des nouveaux runs du driver
@@ -189,14 +195,32 @@ if (($file_handle = fopen('./gpsChallenge.json', 'r')) != false)
 }
 if ($found == false)
 {
+    if (($file_handle = fopen($dataFileDrivers, "r")) != false)
+    {
+
+        $modelDrivers = json_decode( fread($file_handle, filesize($dataFileDrivers)));
+        $driversList = $modelDrivers->drivers;
+
+        // parcours de la list des drivers enregistrés
+        foreach ($drivers as &$driver)
+        {
+            if ($driverList->name == $newDriver->name)
+            {
+               if ($newDriver->driverUrl == null || $newDriver->driverUrl == "")
+                    $newDriver->driverUrl = $driverList->driverUrl;
+                break;
+            }
+        }
+        fclose($file_handle);
+    }
     $drivers[] = $newDriver;
     // calculate average
 }
 
 $model = new Model();
-$model->drivers = $drivers;
+$model->challenge = $drivers;
 
-if (($file_handle = fopen('./gpsChallenge.json', 'w')) != false)
+if (($file_handle = fopen( $dataFile, "w")) != false)
 {
 	fwrite($file_handle, json_encode($model));
 	fclose($file_handle);
@@ -207,7 +231,7 @@ if (($file_handle = fopen('./gpsChallenge.json', 'w')) != false)
     	echo "$newDriver->updated runs updated for driver $newDriver->name";
 }
 else
-	echo "Ouverture fichier gpsChallenge.json impossible";
+	echo "Ouverture fichier $dataFile impossible";
 
 http_response_code(200);
 ?>
