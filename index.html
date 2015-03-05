@@ -60,14 +60,14 @@
         if (!admin) 
             gridColumns.push({ title: "Rank", width: "4em", template: "#= renderNumber(data) #"});
 
-        gridColumns.push({ field: "name", title: "Driver", template: '<a href=\" #: driverUrl # \" target=\"_blank\"> #: name # </a>'});
+        gridColumns.push({ field: "name", title: "Driver", width: "7em", template: '<a href=\" #: driverUrl # \" target=\"_blank\"> #: name # </a>'});
 
         if (!admin) {
             gridColumns.push({ field: "speed", title: "Moy", width: "4em", format: "{0:n2}"});
             for (var j = 0; j < 5; j++) {
                 gridColumns.push({ field: 'runs[' + j + '].speed', title: 'V(Knot)', width: "5em", format: '{0:n2}'});
                 gridColumns.push({ field: 'runs[' + j + '].spot', title: 'Spot', width: "5em", template: '<a href=\" #: runs[' + j + '].maps # \" target=\"_blank\"> #: runs[' + j + '].spot # </a>'});
-                gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', width: "7em", format: '{0:MM/dd/yyyy}'});
+                gridColumns.push({ field: 'runs[' + j + '].date', title: 'Date', format: '{0:MM/dd}'});
             }
         }
 
